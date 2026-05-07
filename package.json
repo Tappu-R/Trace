@@ -1,0 +1,23 @@
+{
+  "name": "trace",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Tappu-R/Trace#readme",
+  "bugs": {
+    "url": "https://github.com/Tappu-R/Trace/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tappu-R/Trace.git"
+  },
+  "license": "ISC",
+  "author": "Tappu",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "electron": "^42.0.0"
+  }
+}
