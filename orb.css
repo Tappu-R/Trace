@@ -4,12 +4,7 @@ html, body {
     width: 100%;
 }
 
-body {
-    -webkit-app-region: drag;
-}
-
 html {
-    background:#1C1C1D;
-
+    background:#d7d7dc;
 }
 

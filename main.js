@@ -1,19 +1,34 @@
 const { app, BrowserWindow, screen } = require('electron')
+const windowStateKeeper = require('electron-window-state')
+
+let orb;
+let overlay;
 
 function createOrb () {
-    const orb = new BrowserWindow({
-        width: 60,
-        height: 60,
-        alwaysOnTop: true,
+    let orbStateKeeper = new windowStateKeeper(orb,{
+        defaultWidth: 200,
+        defaultHeight:200
+    })
+    orb = new BrowserWindow({
+        x : orbStateKeeper.x,
+        y : orbStateKeeper.y,
+        width: orbStateKeeper.width,
+        height: orbStateKeeper.height,
+        // alwaysOnTop: true,
         resizable: false,
-        frame: false
+        frame: true,
+    
+        webPreferences: {
+            devTools:true
+        }
     })
     orb.loadFile('orb.html')
+    orbStateKeeper.manage(orb)
 }
 
 function overlayWindow () {
     const { width, height } = screen.getPrimaryDisplay().workAreaSize
-    const overlay = new BrowserWindow({
+    overlay = new BrowserWindow({
         width: width,
         height: height,
         resizable: false,
