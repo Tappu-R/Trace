@@ -8,6 +8,13 @@ const body = document.querySelector('body')
 
 let stPosisionX;
 let stPosisionY;
-body.addEventListener('mousedown', () => {
+
+// opening the overlay panel
+body.addEventListener("click", (event) => {
+    window.api.openOverlay()
+})
+
+// draging logic here exist
+function dragMe (event) {
     
-}, true)
+}
