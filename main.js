@@ -1,24 +1,19 @@
 const { app, BrowserWindow, screen, ipcMain} = require('electron')
-const windowStateKeeper = require('electron-window-state')
 const path = require("node:path")
 
 let orb;
 let overlay;
 
 function createOrb () {
-    let orbStateKeeper = new windowStateKeeper(orb,{
-        defaultWidth: 100,
-        defaultHeight:100
-    })
     orb = new BrowserWindow({
-        x : orbStateKeeper.x,
-        y : orbStateKeeper.y,
-        width: 100,
-        height: 100,
+        width: 50,
+        height: 50,
         alwaysOnTop: true,
+
         resizable: false,
         frame: false,
         hasShadow:false,
+
         webPreferences: {
             devTools: true,
             contextIsolation:true,
@@ -30,7 +25,6 @@ function createOrb () {
     orb.on("closed", ()=> app.quit())
 
     orb.loadFile('orb.html')
-    orbStateKeeper.manage(orb)
 }
 
 function overlayWindow () {
@@ -54,12 +48,16 @@ function overlayWindow () {
     overlay.loadFile('overlay.html')
 }
 
-ipcMain.on("openOverlay", () => {
+ipcMain.on("openOverlay", (event) => {
     if (overlay && !overlay.isDestroyed()) {
         overlay.focus();
     } else {
         overlayWindow();
     }
+})
+
+ipcMain.on("drag", (event, posX, posY) => {
+    orb.setPosition(posX, posY)
 })
 
 app.whenReady().then(() => {

@@ -1,20 +1,36 @@
-const body = document.querySelector('body')
+// const body = document.querySelector('body')
 
-// Mechanism
-// double mousedown par draging function invoked
-// double mousedown ke bad ke wale mouseup par posintion ko restore kar 
-// upar wala step sayad electron-window-state module se ho jaye to mouseup ka use karne ki naubat na aaye
-// single click pe overlay open kar dega
-
-let stPosisionX;
-let stPosisionY;
+const openOverlayWindow = (event) => {
+    window.api.openOverlay()
+}
 
 // opening the overlay panel
-body.addEventListener("click", (event) => {
-    window.api.openOverlay()
+window.addEventListener("dblclick", (event) => {
+    openOverlayWindow(event)
 })
 
-// draging logic here exist
-function dragMe (event) {
+window.addEventListener("mousedown", (eventParent) => {
+    const deltaX = eventParent.screenX - window.screenX
+    const deltaY = eventParent.screenY - window.screenY
     
-}
+    console.log("dblclickEvent", eventParent)
+
+    const onMove = (event) => {
+        console.log("moveEvent", event)
+        window.api.drag(event.screenX - deltaX, event.screenY - deltaY)
+        
+    }
+
+    const stopDrag = (event) => {
+        console.log("stopDrag")
+        window.removeEventListener("mousemove", onMove)
+        window.removeEventListener("mouseup", stopDrag)
+    }
+    
+    if (eventParent.detail === 1){
+        window.addEventListener("mousemove", onMove)
+        window.addEventListener("mouseup", stopDrag)
+    }
+    
+})
+
