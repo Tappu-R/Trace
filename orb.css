@@ -1,10 +1,8 @@
 html, body {
     margin: 0;
-    height: 100%;
-    width: 100%;
 }
 
-html {
-    background:#d7d7dc;
+.orb {
+    height: 100vh;
 }
 
