@@ -33,13 +33,13 @@ function overlayWindow () {
         width: width,
         height: height,
         resizable: false,
-        // transparent: true,
+        transparent: true,
         hasShadow:false,
         titleBarStyle: 'hidden',
         titleBarOverlays: true,
 
         webPreferences : {
-            devTools : false,
+            devTools : true,
             contextIsolation:true,
             nodeIntegration:false
         }
