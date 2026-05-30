@@ -10,7 +10,7 @@ function createOrb () {
         height: 50,
         alwaysOnTop: true,
 
-        resizable: false,
+        resizable: true,
         frame: false,
         hasShadow:false,
 
