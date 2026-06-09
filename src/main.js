@@ -24,7 +24,7 @@ function createOrb () {
     
     orb.on("closed", ()=> app.quit())
 
-    orb.loadFile('orb.html')
+    orb.loadFile('./orb.html')
 }
 
 function overlayWindow () {
@@ -50,7 +50,7 @@ function overlayWindow () {
 
 ipcMain.on("openOverlay", (event) => {
     if (overlay && !overlay.isDestroyed()) {
-        overlay.focus();
+        overlay.close();
     } else {
         overlayWindow();
     }
