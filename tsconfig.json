@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    // Environment setup & latest features
+    "lib": ["es2025", "DOM"],
+    "target": "es2025",
+    "module": "nodenext",
+    "moduleDetection": "force",
+    "allowJs": true,
+    "types": ["bun","node", "electron"],
+
+    "rootDir": "./src",
+    "outDir" : "./dist",
+
+    // Bundler mode
+    "moduleResolution": "nodenext",
+    "verbatimModuleSyntax": true,
+
+    // Best practices
+    "strict": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+
+    // Some stricter flags (disabled by default)
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": false
+  },
+  "exclude": ["node_modules"],
+  "include": ["src/**/*"]
+}
