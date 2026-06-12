@@ -1,5 +1,5 @@
 const openOverlayWindow = (event:Event) => {
-    // window.api.openOverlay()
+    window.api.openOverlay()
     console.log("hlle")
     event;
 }

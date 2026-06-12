@@ -2,9 +2,9 @@ export {};
 
 declare global {
     interface window {
-        api : {
-            openOverlay() : void
-        }
+        // api : {
+        //     openOverlay() : void
+        // }
 
         maths : {
             dragCalc() : void

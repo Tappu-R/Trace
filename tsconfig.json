@@ -6,7 +6,7 @@
     "module": "nodenext",
     "moduleDetection": "force",
     "allowJs": true,
-    "types": ["bun","node", "electron"],
+    "types": ["node", "electron"],
 
     "rootDir": "./src",
     "outDir" : "./dist",
@@ -18,7 +18,7 @@
     // Best practices
     "strict": true,
     "skipLibCheck": true,
-    "declaration": true,
+    "declaration": false,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
