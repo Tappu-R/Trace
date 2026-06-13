@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "strict" : true,
+
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "skipLibCheck": true,
+        "noPropertyAccessFromIndexSignature": false
+    },
+
+    "exclude": ["node_modules"]
+}

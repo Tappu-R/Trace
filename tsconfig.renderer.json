@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig.base.json",
+
+    "compilerOptions": {
+        "target": "es2025",
+        "module": "commonjs",
+        "lib": ["es2025", "DOM"]
+    },
+    "include": ["./src/renderer/**/*", ""]
+}
