@@ -13,10 +13,15 @@
   "license": "ISC",
   "author": "Tappu",
   "type": "module",
-  "main": "dist/main.js",
+  "main": "dist/main/main.js",
   "scripts": {
-    "build": "tsc -p tsconfig.main.json",
-    "start": "npx tscelectron .",
+    "build:main": "tsc -p tsconfig.main.json",
+    "build:renderer" : "tsc -p tsconfig.renderer.json",
+    "build:preload" : "tsc -p tsconfig.preload.json",
+
+    "build" : "bun build:main && bun build:preload && bun build:renderer",
+
+    "start": "electron .",
     "nodemon": "nodemon --exec electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

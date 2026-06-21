@@ -2,7 +2,12 @@ html, body {
     margin: 0;
 }
 
-.orb {
-    height: 100vh;
+#orb {
+    width: 50vw;
+    height: 50vh;
+    background-color: #ffff;
+    border: #000;
+    border-radius: 50%;
+    border-color:#0288D1;
 }
 

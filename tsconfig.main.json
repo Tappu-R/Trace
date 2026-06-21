@@ -6,9 +6,11 @@
         "module": "nodenext",
         "types": ["bun", "node", "electron"],
 
-        "rootDir": "./src",
-        "outDir" : "./dist",
+        "noEmitOnError": false,
+
+        "rootDir": "./src/main",
+        "outDir" : "./dist/main",
     },
     "exclude": ["node_modules"],
-    "include": ["src/main/**/*"]
+    "include": ["src/main/**/*.ts"]
 }

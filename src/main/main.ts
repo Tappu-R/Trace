@@ -1,14 +1,15 @@
 import { app, BrowserWindow, screen, ipcMain} from 'electron'
 import path from "node:path"
 
-let orb:BrowserWindow;
+let window:BrowserWindow;
 
-function createOrb () {
-    orb = new BrowserWindow({
+function createWindow () {
+    window = new BrowserWindow({
         width: 50,
         height: 50,
-        alwaysOnTop: true,
 
+        alwaysOnTop: true,
+        transparent: true,
         resizable: true,
         frame: false,
         hasShadow:false,
@@ -20,17 +21,13 @@ function createOrb () {
         }
     }) 
     
-    orb.on("closed", ()=> app.quit())
-    orb.loadFile('./html/orb.html')
+    window.on("closed", ()=> app.quit())
+    window.loadFile('./src/renderer/html/main.html')
 }
 
 
-ipcMain.on("drag", (event, posX, posY) => {
-    orb.setPosition(posX, posY)
-})
-
 app.whenReady().then(() => {
-    createOrb()
+    createWindow()
 })
 
 app.on('window-all-closed', () => {

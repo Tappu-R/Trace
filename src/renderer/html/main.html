@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,16 @@
     <link rel="stylesheet" href="../css/overlay.css">
     <title>Trace</title>
 </head>
+
 <body>
-    <div class="orb">Hello</div>
+    <div class="orb" id="orb" draggable="true">
+        
+    </div>
+
+    <canvas id="mainCanvas"></canvas>
 </body>
-<script type="module" src="../../../dist/orb.js"></script>
-<script type="module" src="../../../dist/overlay.js"></script>
+
+<script type="module" src="../../../dist/renderer/orb.js"></script>
+<script type="module" src="../../../dist/renderer/overlay.js"></script>
+
 </html>
