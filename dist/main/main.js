@@ -1,10 +1,13 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, screen, ipcMain } from 'electron';
 import path from "node:path";
 let window;
 function createWindow() {
+    const primaryDisplay = screen.getPrimaryDisplay();
+    const width = primaryDisplay.workAreaSize.width;
+    const height = primaryDisplay.workAreaSize.height;
     window = new BrowserWindow({
-        width: 50,
-        height: 50,
+        width: width,
+        height: height,
         alwaysOnTop: true,
         transparent: true,
         resizable: true,
@@ -14,7 +17,7 @@ function createWindow() {
             devTools: true,
             contextIsolation: true,
             nodeIntegration: false,
-            preload: path.join(app.getAppPath(), "./dist/preload.js")
+            preload: path.join(app.getAppPath(), "./dist/preload/preload.js")
         }
     });
     window.on("closed", () => app.quit());
@@ -26,5 +29,13 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
+    }
+});
+ipcMain.addListener("onDrawingMode", () => {
+    window.setIgnoreMouseEvents(false);
+});
+ipcMain.addListener("offDrawingMode", () => {
+    if (!window.setIgnoreMouseEvents) {
+        window.setIgnoreMouseEvents(true);
     }
 });

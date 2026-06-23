@@ -1,4 +1,4 @@
-export {};
+export{};
 
 declare global {
     interface Window {
@@ -7,6 +7,8 @@ declare global {
         }
         api: {
             openOverlay(): void
+            onDrawingMode() : void
+            offDrawingMode() : void
         }
     }
 }

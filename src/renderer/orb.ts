@@ -1,15 +1,6 @@
-const openOverlayWindow = (event:Event) => {
-    // window.api.openOverlay()
-    console.log("hlle")
-    event;
-}
 
-const coordinates = () => {
-    
-}
+const orb:HTMLBodyElement|null = document.querySelector(".orb")
 
-// opening the overlay panel
-window.addEventListener("dblclick", (event) => {
-    openOverlayWindow(event)
+orb?.addEventListener('click', (event)=>{
+    window.api.onDrawingMode();
 })
-

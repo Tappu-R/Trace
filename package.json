@@ -21,7 +21,8 @@
 
     "build" : "bun build:main && bun build:preload && bun build:renderer",
 
-    "start": "electron .",
+    "start": "bun run build && electron .",
+    "dev" : "electron .",
     "nodemon": "nodemon --exec electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

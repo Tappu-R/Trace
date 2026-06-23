@@ -1,7 +1,9 @@
 import {contextBridge, ipcRenderer} from 'electron';
 
 contextBridge.exposeInMainWorld("api", {
-    openOverlay : () => {ipcRenderer.send("openOverlay")}
+    openOverlay : () => {ipcRenderer.send("openOverlay")},
+    onDrawingMode: () => {ipcRenderer.send("onDrawingMode")},
+    offDrawingMode: () => {ipcRenderer.send("offDrawingMode")}
 })
 
 contextBridge.exposeInMainWorld("maths", {
