@@ -1,35 +1,61 @@
 import { app, BrowserWindow, screen, ipcMain} from 'electron'
+import { log } from 'node:console';
 import path from "node:path"
 
-let window:BrowserWindow;
+let orb:BrowserWindow;
+let overlay:BrowserWindow;
+let primaryDisplay:Electron.Display ;
+let width:number;
+let height:number;
 
-function createWindow () {
-    const primaryDisplay:Electron.Display = screen.getPrimaryDisplay();
-    const width:number = primaryDisplay.workAreaSize.width;
-    const height:number = primaryDisplay.workAreaSize.height;
-    window = new BrowserWindow({
-        width: width,
-        height: height,
+function createOrb () {
+    orb = new BrowserWindow({
+        width: Math.floor(width/20),
+        height: Math.floor(height/10),
 
         alwaysOnTop: true,
-        transparent: true,
+        transparent: false,
         resizable: true,
         frame: false,
         hasShadow:false,
+
         webPreferences: {
-            devTools: true,
+            devTools: true, // Just enabled for now bad me false kar denge
             contextIsolation:true,
             nodeIntegration:false,
-            preload: path.join(app.getAppPath(), "./dist/preload/preload.js")
+            preload: path.join(app.getAppPath(), "./dist/preload/MainPreload.js")
         }
     }) 
     
-    window.on("closed", ()=> app.quit())
-    window.loadFile('./src/renderer/html/main.html')
+    orb.on("closed", ()=> app.quit())
+    orb.loadFile('./src/renderer/html/main.html')
+}
+
+function createOverlay () {
+    overlay = new BrowserWindow({
+        width: width,
+        height: height,
+        
+        resizable: false,
+        frame:false,
+        transparent:true,
+
+        webPreferences: {
+            devTools: true, // Just for now, Disable it for security
+            contextIsolation:true,
+            nodeIntegration:false,
+            preload: path.join(__dirname, "./dist/preload/OverlayPreload.ts")
+        }
+    })
+
+    overlay.loadFile("./src/renderer/html/overlay.html")
 }
 
 app.whenReady().then(() => {
-    createWindow()
+    primaryDisplay = screen.getPrimaryDisplay();
+    width = primaryDisplay.workAreaSize.width;
+    height = primaryDisplay.workAreaSize.height;
+    createOrb()
 })
 
 app.on('window-all-closed', () => {
@@ -39,15 +65,18 @@ app.on('window-all-closed', () => {
 })
 
 ipcMain.addListener("onDrawingMode", ()=>{
-    window.setIgnoreMouseEvents(false)
+    if (!overlay || overlay.isDestroyed()) {
+        createOverlay()
+    } else {
+        overlay.close()
+    }
+    
 })
 
 ipcMain.addListener("offDrawingMode", ()=> {
-    if (!window.setIgnoreMouseEvents){
-        window.setIgnoreMouseEvents(true)
+    if (overlay){
+        overlay.close()
     }
 })
-
-
 
 
