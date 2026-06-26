@@ -2,6 +2,10 @@ html body .overlay{
     margin : 0;
 }
 
+.navbar {
+    display: flex;
+}
+
 .overlay {
     height: 100vh;
 }

@@ -1,6 +1,7 @@
 import { app, BrowserWindow, screen, ipcMain} from 'electron'
-import { log } from 'node:console';
 import path from "node:path"
+import type {Point} from "../engine/engin.ts"
+import {drag} from "../engine/engin.ts"
 
 let orb:BrowserWindow;
 let overlay:BrowserWindow;
@@ -20,10 +21,10 @@ function createOrb () {
         hasShadow:false,
 
         webPreferences: {
-            devTools: true, // Just enabled for now bad me false kar denge
+            devTools: true, // Just enabled for now, baad me false kar denge
             contextIsolation:true,
             nodeIntegration:false,
-            preload: path.join(app.getAppPath(), "./dist/preload/MainPreload.js")
+            preload: path.join(__dirname, "./dist/preload/MainPreload.js")
         }
     }) 
     
@@ -52,10 +53,30 @@ function createOverlay () {
 }
 
 app.whenReady().then(() => {
+    
+    // Need 
+    // 1> window positon
+    // 2> current mouse Position
+    // 3> after one move event emit mouse position
+
+    const screenConstant:Point = {
+        Name:"Orb Window Position",
+        Discription: "Changes after one mouse move event emit", 
+        x: orb.getPosition()[0],
+        y: orb.getPosition()[1],
+    };
+    
+    // const windowNewPosition:Point = drag(currentMousePosition, targetMousePosition, screenConstant)
+
+    // orb.setPosition(windowNewPosition.x, windowNewPosition.y)
+
     primaryDisplay = screen.getPrimaryDisplay();
     width = primaryDisplay.workAreaSize.width;
     height = primaryDisplay.workAreaSize.height;
     createOrb()
+})
+
+ipcMain.addListener("mouseDownPoint", (event) => {
 })
 
 app.on('window-all-closed', () => {
@@ -70,7 +91,6 @@ ipcMain.addListener("onDrawingMode", ()=>{
     } else {
         overlay.close()
     }
-    
 })
 
 ipcMain.addListener("offDrawingMode", ()=> {
@@ -78,5 +98,4 @@ ipcMain.addListener("offDrawingMode", ()=> {
         overlay.close()
     }
 })
-
 

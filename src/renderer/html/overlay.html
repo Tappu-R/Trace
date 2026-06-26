@@ -7,7 +7,8 @@
     <title>Overlay</title>
 </head>
 <body>
-    <nav class="titlebar" id="titlebar">
+    <nav class="navbar" id="navbar">
+        <img src="../../assets/logo.svg" alt="trace" class="logo">
         <ul class="navlist">
             <li class="files"><img src="../../assets/icons/files.svg" alt="Files"><b>Files</b></li>
             <li class="preferences"><img src="../../assets/icons/room_preferences.svg" alt="Preferences"><b>Preferences</b></li>
@@ -15,9 +16,9 @@
             <li class="close"><img src="../../assets/icons/close.svg" alt="close"></li>
         </ul>
     </nav>
-    <section class="Settings"></section>
-    <section class="Toolbar"></section>
     <section class="Overlay">
+        <div class="pen" id="pen"></div>
+        <div class="eraser" id="eraser"></div>
         <canvas class="canvas" id="canvas"></canvas>
     </section>
 

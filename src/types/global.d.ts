@@ -9,7 +9,8 @@ declare global {
             openOverlay(): void
             onDrawingMode() : void
             offDrawingMode() : void
+            mouseDownPoint(event:any) : void
         }
     }
-}
 
+}
