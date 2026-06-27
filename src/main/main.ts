@@ -1,13 +1,19 @@
 import { app, BrowserWindow, screen, ipcMain} from 'electron'
 import path from "node:path"
-import type {Point} from "../engine/engin.ts"
-import {drag} from "../engine/engin.ts"
+import type {Point} from "./engine/engine.js"
+import {drag} from "./engine/engine.js"
 
 let orb:BrowserWindow;
 let overlay:BrowserWindow;
 let primaryDisplay:Electron.Display ;
 let width:number;
 let height:number;
+let currentMousePosition:Point;
+let updatedMousePosition:Point = {
+    Name: "Updated Mouse Position",
+    x: 0,
+    y: 0
+}
 
 function createOrb () {
     orb = new BrowserWindow({
@@ -24,7 +30,7 @@ function createOrb () {
             devTools: true, // Just enabled for now, baad me false kar denge
             contextIsolation:true,
             nodeIntegration:false,
-            preload: path.join(__dirname, "./dist/preload/MainPreload.js")
+            preload: path.join(app.getAppPath(), "./dist/preload/MainPreload.js")
         }
     }) 
     
@@ -45,7 +51,7 @@ function createOverlay () {
             devTools: true, // Just for now, Disable it for security
             contextIsolation:true,
             nodeIntegration:false,
-            preload: path.join(__dirname, "./dist/preload/OverlayPreload.ts")
+            preload: path.join(app.getAppPath(), "./dist/preload/OverlayPreload.ts")
         }
     })
 
@@ -53,30 +59,52 @@ function createOverlay () {
 }
 
 app.whenReady().then(() => {
-    
+    primaryDisplay = screen.getPrimaryDisplay();
+    width = primaryDisplay.workAreaSize.width;
+    height = primaryDisplay.workAreaSize.height;
+    createOrb()
+        
+})
+
+ipcMain.on("openOverlay", (ipcEvent, event)=>{
+    createOverlay()
+})
+
+ipcMain.on("drag", (ipcEvent, event)=>{
+    if (event.detail === 1) {
+        currentMousePosition = {
+            Name: "first comming mouse position",
+            x: event.clientX,
+            y: event.clientY
+        }
+    } else {
+        updatedMousePosition = currentMousePosition;
+        currentMousePosition = {
+            Name: "latest mouse position",
+            x:event.clientX,
+            y:event.clientY
+        }
+    }
+
     // Need 
     // 1> window positon
     // 2> current mouse Position
     // 3> after one move event emit mouse position
 
-    const screenConstant:Point = {
+    let screenConstant:Point = {
         Name:"Orb Window Position",
         Discription: "Changes after one mouse move event emit", 
-        x: orb.getPosition()[0],
-        y: orb.getPosition()[1],
+        x: orb.getPosition()[0] as number,
+        y: orb.getPosition()[1] as number,
     };
-    
-    // const windowNewPosition:Point = drag(currentMousePosition, targetMousePosition, screenConstant)
 
-    // orb.setPosition(windowNewPosition.x, windowNewPosition.y)
+    let orbPosition: Point = drag(currentMousePosition, updatedMousePosition, screenConstant)
 
-    primaryDisplay = screen.getPrimaryDisplay();
-    width = primaryDisplay.workAreaSize.width;
-    height = primaryDisplay.workAreaSize.height;
-    createOrb()
-})
+    /// Debugging
+    console.log(screenConstant)    
+    console.log(orbPosition)
+    console.log("____________END______________")
 
-ipcMain.addListener("mouseDownPoint", (event) => {
 })
 
 app.on('window-all-closed', () => {

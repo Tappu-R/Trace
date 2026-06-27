@@ -1,12 +1,9 @@
 import {contextBridge, ipcRenderer} from 'electron';
 
-contextBridge.exposeInMainWorld("api", {
-    openOverlay : () => {ipcRenderer.send("openOverlay")},
-    onDrawingMode: () => {ipcRenderer.send("onDrawingMode")},
-    offDrawingMode: () => {ipcRenderer.send("offDrawingMode")},
-    mouseDownPoint : () => {ipcRenderer.send("drag")}
-})
+let API = {
+    openOverlay : (event:any) => {ipcRenderer.send("openOverlay", event)},
+    drag : (event:any) => {ipcRenderer.send("drag", event)}
+}
 
-contextBridge.exposeInMainWorld("maths", {
-    dragCalc : () => {ipcRenderer.send("dragCalc")}
-})
+
+contextBridge.exposeInMainWorld("API",API)

@@ -9,7 +9,7 @@
     // See also https://aka.ms/tsconfig/module
     // "module": "nodenext",
     // "target": "esnext",
-    "types": [],
+    // "types": ["","@types/src"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -34,12 +34,13 @@
 
     // Recommended Options
     "strict": true,
+    // "allowImportingTsExtensions": true,
     // "jsx": "react-jsx",
     // "verbatimModuleSyntax": true,
-    "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
+    // "isolatedModules": true,
+    // "noUncheckedSideEffectImports": true,
+    // "moduleDetection": "force",
     "skipLibCheck": true,
   }, 
-  "include": ["src/types/**/*.d.ts"]
+  "include": ["src/**/*"]
 }

@@ -1,4 +1,3 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const canvas = document.querySelector("#mainCanvas");
+const canvas = document.querySelector(".canvas");
 const ctx = canvas.getContext("2d");
