@@ -2,15 +2,16 @@
     "extends": "./tsconfig.base.json",
 
     "compilerOptions": {
-        "target": "es2025",
+        "target": "es2022",
         "module": "commonjs",
-        "lib": ["es2025", "DOM"],
-    
+        "moduleResolution": "bundler",
+        "lib": ["es2022", "DOM"],
+        "jsx": "react-jsx",
+        "types": ["vite/client"],
         "noEmitOnError": false,
-        
         "rootDir": "./src/renderer",
         "outDir": "./dist/renderer"
     },
-    "include": ["src/renderer/**/*.ts"],
+    "include": ["src/renderer/**/*", "src/@types/**/*.d.ts"],
     "exclude": ["node_modules"]
 }

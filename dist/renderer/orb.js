@@ -13,13 +13,13 @@ function onPointerMove(event) {
 }
 function endDrag() {
     isDragging = false;
-    orb?.removeEventListener("pointermove", onPointerMove);
-    orb?.removeEventListener("pointerup", endDrag);
-    orb?.removeEventListener("pointercancel", endDrag);
+    window.removeEventListener("pointermove", onPointerMove);
+    window.removeEventListener("pointerup", endDrag);
+    window.removeEventListener("pointercancel", endDrag);
 }
 orb?.addEventListener("pointerdown", () => {
     isDragging = true;
-    orb?.addEventListener("pointermove", onPointerMove);
-    orb?.addEventListener("pointerup", endDrag);
-    orb?.addEventListener("pointercancel", endDrag);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", endDrag);
+    window.addEventListener("pointercancel", endDrag);
 });

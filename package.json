@@ -15,8 +15,8 @@
   "type": "module",
   "main": "dist/main/main.js",
   "scripts": {
-    "build:main": "tsc -p tsconfig.main.json",
-    "build:renderer": "tsc -p tsconfig.renderer.json",
+    "build:main": "tsc -p tsconfig.main.json ",
+    "build:renderer": "tsc -p tsconfig.renderer.json --jsx react-jsx",
     "build:preload": "tsc -p tsconfig.preload.json",
     "build": "bun build:main && bun build:preload && bun build:renderer",
     "start": "bun run build && electron .",
@@ -26,11 +26,16 @@
   },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.18.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "electron": "^42.0.0",
     "electron-window-state": "^5.0.3",
     "electron-window-state-manager": "^0.3.2",
     "excalidraw": "^0.6.4",
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "vite": "^8.2.0"
   },
   "private": true,
   "devDependencies": {

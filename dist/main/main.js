@@ -26,7 +26,7 @@ function createOrb() {
         }
     });
     orb.on("closed", () => app.quit());
-    orb.loadFile('./src/renderer/html/main.html');
+    orb.loadFile(path.join(app.getAppPath(), "dist/renderer/orb.html"));
 }
 function createOverlay() {
     overlay = new BrowserWindow({
@@ -34,28 +34,31 @@ function createOverlay() {
         height: height,
         resizable: false,
         frame: false,
-        transparent: true,
+        transparent: false,
         webPreferences: {
             devTools: true, // Just for now, Disable it for security
             contextIsolation: true,
             nodeIntegration: false,
-            preload: path.join(app.getAppPath(), "./dist/preload/OverlayPreload.ts")
+            preload: path.join(app.getAppPath(), "./dist/preload/OverlayPreload.js")
         }
     });
-    overlay.loadFile("./src/renderer/html/overlay.html");
+    overlay.loadFile(path.join(app.getAppPath(), "dist/renderer/html/index.html"));
 }
 app.whenReady().then(() => {
     primaryDisplay = screen.getPrimaryDisplay();
     width = primaryDisplay.workAreaSize.width;
     height = primaryDisplay.workAreaSize.height;
-    // for debugging only
-    console.log(width, height);
-    createOrb(); // Created the orb object  
-    screenConstant = {
-        x: orb.getPosition()[0],
-        y: orb.getPosition()[1],
-    };
-    console.log(screenConstant);
+    // NOTE: Orb process work
+    // // for debugging only
+    // console.log(width, height)
+    // createOrb() // Created the orb object  
+    // screenConstant = {
+    //     x: orb.getPosition()[0] as number,
+    //     y: orb.getPosition()[1] as number,
+    // };
+    // console.log(screenConstant)
+    // NOTE: overylay process work
+    createOverlay();
 });
 ipcMain.on("openOverlay", (ipcEvent) => {
     createOverlay();
@@ -63,7 +66,7 @@ ipcMain.on("openOverlay", (ipcEvent) => {
 let previousMousePosition;
 let currentMousePosition;
 let orbPosition;
-ipcMain.on("drag", (ipcEvent, mousePosition) => {
+function draging(mousePosition) {
     if (!currentMousePosition) {
         currentMousePosition = {
             x: mousePosition.x,
@@ -90,6 +93,9 @@ ipcMain.on("drag", (ipcEvent, mousePosition) => {
     screenConstant = updateScreenConstant();
     console.log(`screenConstantAfter {x : ${screenConstant.x}, y : ${screenConstant.y}}`);
     console.log("____________END______________");
+}
+ipcMain.on("drag", (ipcEvent, mousePosition) => {
+    // draging(mousePosition)
 });
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {

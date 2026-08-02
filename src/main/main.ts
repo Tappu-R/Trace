@@ -33,7 +33,8 @@ function createOrb () {
     }) 
     
     orb.on("closed", ()=> app.quit())
-    orb.loadFile('./src/renderer/html/main.html')
+    
+    orb.loadFile(path.join(app.getAppPath(), "dist/renderer/orb.html"))
 }
 
 function createOverlay () {
@@ -43,34 +44,43 @@ function createOverlay () {
         
         resizable: false,
         frame:false,
-        transparent:true,
+        transparent:false,
 
         webPreferences: {
             devTools: true, // Just for now, Disable it for security
             contextIsolation:true,
             nodeIntegration:false,
-            preload: path.join(app.getAppPath(), "./dist/preload/OverlayPreload.ts")
+            preload: path.join(app.getAppPath(), "./dist/preload/OverlayPreload.js")
         }
     })
-
-    overlay.loadFile("./src/renderer/html/overlay.html")
+    overlay.loadFile(path.join(app.getAppPath(), "dist/renderer/html/index.html"))
+    
 }
 
 app.whenReady().then(() => {
+
     primaryDisplay = screen.getPrimaryDisplay();
     width = primaryDisplay.workAreaSize.width;
     height = primaryDisplay.workAreaSize.height;
 
-    // for debugging only
-    console.log(width, height)
+    
+    // NOTE: Orb process work
+    
+    // // for debugging only
+    // console.log(width, height)
 
-    createOrb() // Created the orb object  
-    screenConstant = {
-        x: orb.getPosition()[0] as number,
-        y: orb.getPosition()[1] as number,
-    };
+    // createOrb() // Created the orb object  
+    // screenConstant = {
+    //     x: orb.getPosition()[0] as number,
+    //     y: orb.getPosition()[1] as number,
+    // };
 
-    console.log(screenConstant)
+    // console.log(screenConstant)
+
+
+    // NOTE: overylay process work
+    createOverlay()
+
 })
 
 ipcMain.on("openOverlay", (ipcEvent)=>{
