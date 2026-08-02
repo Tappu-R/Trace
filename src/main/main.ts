@@ -1,28 +1,26 @@
 import { app, BrowserWindow, screen, ipcMain} from 'electron'
 import path from "node:path"
 import type {Point} from "./engine/engine.js"
-import {drag} from "./engine/engine.js"
+import {drag, updateScreenConstant} from "./engine/engine.js"
 
 let orb:BrowserWindow;
 let overlay:BrowserWindow;
 let primaryDisplay:Electron.Display ;
 let width:number;
 let height:number;
-let currentMousePosition:Point;
-let updatedMousePosition:Point = {
-    Name: "Updated Mouse Position",
-    x: 0,
-    y: 0
-}
+let screenConstant:Point;
 
 function createOrb () {
     orb = new BrowserWindow({
-        width: Math.floor(width/20),
+        width: Math.floor(width/10),
         height: Math.floor(height/10),
+        
+        // x: 1,
+        // y: 1,
 
         alwaysOnTop: true,
         transparent: false,
-        resizable: true,
+        resizable: false,
         frame: false,
         hasShadow:false,
 
@@ -62,28 +60,42 @@ app.whenReady().then(() => {
     primaryDisplay = screen.getPrimaryDisplay();
     width = primaryDisplay.workAreaSize.width;
     height = primaryDisplay.workAreaSize.height;
-    createOrb()
-        
+
+    // for debugging only
+    console.log(width, height)
+
+    createOrb() // Created the orb object  
+    screenConstant = {
+        x: orb.getPosition()[0] as number,
+        y: orb.getPosition()[1] as number,
+    };
+
+    console.log(screenConstant)
 })
 
-ipcMain.on("openOverlay", (ipcEvent, event)=>{
+ipcMain.on("openOverlay", (ipcEvent)=>{
     createOverlay()
 })
 
-ipcMain.on("drag", (ipcEvent, event)=>{
-    if (event.detail === 1) {
+
+let previousMousePosition: Point | undefined
+let currentMousePosition: Point | undefined
+let orbPosition : Point
+
+function draging(mousePosition:any){
+    if (!currentMousePosition) {
         currentMousePosition = {
-            Name: "first comming mouse position",
-            x: event.clientX,
-            y: event.clientY
+            x: mousePosition.x,
+            y: mousePosition.y
         }
-    } else {
-        updatedMousePosition = currentMousePosition;
-        currentMousePosition = {
-            Name: "latest mouse position",
-            x:event.clientX,
-            y:event.clientY
-        }
+        previousMousePosition = { ...currentMousePosition }
+        return
+    }
+
+    previousMousePosition = currentMousePosition
+    currentMousePosition = {
+        x: mousePosition.x,
+        y: mousePosition.y
     }
 
     // Need 
@@ -91,21 +103,25 @@ ipcMain.on("drag", (ipcEvent, event)=>{
     // 2> current mouse Position
     // 3> after one move event emit mouse position
 
-    let screenConstant:Point = {
-        Name:"Orb Window Position",
-        Discription: "Changes after one mouse move event emit", 
-        x: orb.getPosition()[0] as number,
-        y: orb.getPosition()[1] as number,
-    };
+    orbPosition = drag(currentMousePosition, previousMousePosition, screenConstant)
+    
+    orb.setPosition(Math.floor(orbPosition.x), Math.floor(orbPosition.y))
+    /// Debugging 
+    console.log(`screenConstantBefore {x : ${screenConstant.x}, y : ${screenConstant.y}}`)
+    console.log(`orbNewPosition {x : ${orbPosition.x}, y : ${orbPosition.y}}`)
 
-    let orbPosition: Point = drag(currentMousePosition, updatedMousePosition, screenConstant)
+    // updating screenConstant
+    screenConstant = updateScreenConstant()
 
-    /// Debugging
-    console.log(screenConstant)    
-    console.log(orbPosition)
+    console.log(`screenConstantAfter {x : ${screenConstant.x}, y : ${screenConstant.y}}`)
     console.log("____________END______________")
 
+}
+
+ipcMain.on("drag", (ipcEvent, mousePosition)=>{
+    // draging(mousePosition)
 })
+
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin'){
@@ -113,7 +129,7 @@ app.on('window-all-closed', () => {
     }
 })
 
-ipcMain.addListener("onDrawingMode", ()=>{
+ipcMain.on("onDrawingMode", ()=>{
     if (!overlay || overlay.isDestroyed()) {
         createOverlay()
     } else {
@@ -121,9 +137,8 @@ ipcMain.addListener("onDrawingMode", ()=>{
     }
 })
 
-ipcMain.addListener("offDrawingMode", ()=> {
+ipcMain.on("offDrawingMode", ()=> {
     if (overlay){
         overlay.close()
     }
 })
-

@@ -1,9 +1,13 @@
 import {contextBridge, ipcRenderer} from 'electron';
-
-let API = {
-    openOverlay : (event:any) => {ipcRenderer.send("openOverlay", event)},
-    drag : (event:any) => {ipcRenderer.send("drag", event)}
+interface Point {
+    Name?:string,
+    x: number,
+    y: number
 }
 
+let API = {
+    openOverlay : () => {ipcRenderer.send("openOverlay")},
+    drag : (mousePosition:Point) => {ipcRenderer.send("drag", mousePosition)}
+}
 
 contextBridge.exposeInMainWorld("API",API)

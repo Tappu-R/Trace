@@ -1,15 +1,15 @@
-// declare global {
-//     interface Window {
-//         maths : {
-//             dragCalc() : void
-//         }
-//         API: {
-//             openOverlay(event:any): void
-//             onDrawingMode(event:any) : void
-//             offDrawingMode(event:any) : void
-//             mouseDownPoint(event:any) : void
-//         }
-//     }
-// }
+declare global {
+    interface Point {
+        x: number
+        y: number
+    }
+
+    interface Window {
+        API: {
+            openOverlay(): void
+            drag(mousePosition: Point): void
+        }
+    }
+}
 
 export {}

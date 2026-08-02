@@ -1,24 +1,21 @@
 import { app, BrowserWindow, screen, ipcMain } from 'electron';
 import path from "node:path";
-import { drag } from "./engine/engine.js";
+import { drag, updateScreenConstant } from "./engine/engine.js";
 let orb;
 let overlay;
 let primaryDisplay;
 let width;
 let height;
-let currentMousePosition;
-let updatedMousePosition = {
-    Name: "Updated Mouse Position",
-    x: 0,
-    y: 0
-};
+let screenConstant;
 function createOrb() {
     orb = new BrowserWindow({
-        width: Math.floor(width / 20),
+        width: Math.floor(width / 10),
         height: Math.floor(height / 10),
+        // x: 1,
+        // y: 1,
         alwaysOnTop: true,
         transparent: false,
-        resizable: true,
+        resizable: false,
         frame: false,
         hasShadow: false,
         webPreferences: {
@@ -51,41 +48,47 @@ app.whenReady().then(() => {
     primaryDisplay = screen.getPrimaryDisplay();
     width = primaryDisplay.workAreaSize.width;
     height = primaryDisplay.workAreaSize.height;
-    createOrb();
+    // for debugging only
+    console.log(width, height);
+    createOrb(); // Created the orb object  
+    screenConstant = {
+        x: orb.getPosition()[0],
+        y: orb.getPosition()[1],
+    };
+    console.log(screenConstant);
 });
-ipcMain.on("openOverlay", (ipcEvent, event) => {
+ipcMain.on("openOverlay", (ipcEvent) => {
     createOverlay();
 });
-ipcMain.on("drag", (ipcEvent, event) => {
-    if (event.detail === 1) {
+let previousMousePosition;
+let currentMousePosition;
+let orbPosition;
+ipcMain.on("drag", (ipcEvent, mousePosition) => {
+    if (!currentMousePosition) {
         currentMousePosition = {
-            Name: "first comming mouse position",
-            x: event.clientX,
-            y: event.clientY
+            x: mousePosition.x,
+            y: mousePosition.y
         };
+        previousMousePosition = { ...currentMousePosition };
+        return;
     }
-    else {
-        updatedMousePosition = currentMousePosition;
-        currentMousePosition = {
-            Name: "latest mouse position",
-            x: event.clientX,
-            y: event.clientY
-        };
-    }
+    previousMousePosition = currentMousePosition;
+    currentMousePosition = {
+        x: mousePosition.x,
+        y: mousePosition.y
+    };
     // Need 
     // 1> window positon
     // 2> current mouse Position
     // 3> after one move event emit mouse position
-    let screenConstant = {
-        Name: "Orb Window Position",
-        Discription: "Changes after one mouse move event emit",
-        x: orb.getPosition()[0],
-        y: orb.getPosition()[1],
-    };
-    let orbPosition = drag(currentMousePosition, updatedMousePosition, screenConstant);
-    /// Debugging
-    console.log(screenConstant);
-    console.log(orbPosition);
+    orbPosition = drag(currentMousePosition, previousMousePosition, screenConstant);
+    orb.setPosition(Math.floor(orbPosition.x), Math.floor(orbPosition.y));
+    /// Debugging 
+    console.log(`screenConstantBefore {x : ${screenConstant.x}, y : ${screenConstant.y}}`);
+    console.log(`orbNewPosition {x : ${orbPosition.x}, y : ${orbPosition.y}}`);
+    // updating screenConstant
+    screenConstant = updateScreenConstant();
+    console.log(`screenConstantAfter {x : ${screenConstant.x}, y : ${screenConstant.y}}`);
     console.log("____________END______________");
 });
 app.on('window-all-closed', () => {
@@ -93,7 +96,7 @@ app.on('window-all-closed', () => {
         app.quit();
     }
 });
-ipcMain.addListener("onDrawingMode", () => {
+ipcMain.on("onDrawingMode", () => {
     if (!overlay || overlay.isDestroyed()) {
         createOverlay();
     }
@@ -101,7 +104,7 @@ ipcMain.addListener("onDrawingMode", () => {
         overlay.close();
     }
 });
-ipcMain.addListener("offDrawingMode", () => {
+ipcMain.on("offDrawingMode", () => {
     if (overlay) {
         overlay.close();
     }

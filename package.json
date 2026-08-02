@@ -16,22 +16,20 @@
   "main": "dist/main/main.js",
   "scripts": {
     "build:main": "tsc -p tsconfig.main.json",
-    "build:renderer" : "tsc -p tsconfig.renderer.json",
-    "build:preload" : "tsc -p tsconfig.preload.json",
-
-    "build" : "bun build:main && bun build:preload && bun build:renderer",
-
+    "build:renderer": "tsc -p tsconfig.renderer.json",
+    "build:preload": "tsc -p tsconfig.preload.json",
+    "build": "bun build:main && bun build:preload && bun build:renderer",
     "start": "bun run build && electron .",
-    "dev" : "electron .",
+    "dev": "electron .",
     "nodemon": "nodemon --exec electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@types/node": "^25.9.3",
+    "@excalidraw/excalidraw": "^0.18.1",
     "electron": "^42.0.0",
     "electron-window-state": "^5.0.3",
     "electron-window-state-manager": "^0.3.2",
-    "js-draw": "^1.33.0",
+    "excalidraw": "^0.6.4",
     "nodemon": "^3.1.14"
   },
   "private": true,
