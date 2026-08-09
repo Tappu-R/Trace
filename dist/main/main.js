@@ -33,7 +33,7 @@ function createOverlay() {
         width: width,
         height: height,
         resizable: false,
-        frame: false,
+        frame: true, // off it later
         transparent: false,
         webPreferences: {
             devTools: true, // Just for now, Disable it for security
@@ -42,7 +42,7 @@ function createOverlay() {
             preload: path.join(app.getAppPath(), "./dist/preload/OverlayPreload.js")
         }
     });
-    overlay.loadFile(path.join(app.getAppPath(), "dist/renderer/html/index.html"));
+    overlay.loadURL("http://127.0.0.1:5173");
 }
 app.whenReady().then(() => {
     primaryDisplay = screen.getPrimaryDisplay();

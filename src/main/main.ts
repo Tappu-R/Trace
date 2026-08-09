@@ -1,11 +1,11 @@
-import { app, BrowserWindow, screen, ipcMain} from 'electron'
+import { app, BrowserWindow, screen, ipcMain, webContents} from 'electron'
 import path from "node:path"
 import type {Point} from "./engine/engine.js"
 import {drag, updateScreenConstant} from "./engine/engine.js"
 
 let orb:BrowserWindow;
 let overlay:BrowserWindow;
-let primaryDisplay:Electron.Display ;
+let primaryDisplay:Electron.Display;
 let width:number;
 let height:number;
 let screenConstant:Point;
@@ -43,7 +43,7 @@ function createOverlay () {
         height: height,
         
         resizable: false,
-        frame:false,
+        frame:true, // off it later
         transparent:false,
 
         webPreferences: {
@@ -53,7 +53,8 @@ function createOverlay () {
             preload: path.join(app.getAppPath(), "./dist/preload/OverlayPreload.js")
         }
     })
-    overlay.loadFile(path.join(app.getAppPath(), "dist/renderer/html/index.html"))
+    
+    overlay.loadURL("http://127.0.0.1:5173")
     
 }
 

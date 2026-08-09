@@ -16,18 +16,21 @@
   "main": "dist/main/main.js",
   "scripts": {
     "build:main": "tsc -p tsconfig.main.json ",
-    "build:renderer": "tsc -p tsconfig.renderer.json --jsx react-jsx",
+    "build:renderer": "vite build",
     "build:preload": "tsc -p tsconfig.preload.json",
     "build": "bun build:main && bun build:preload && bun build:renderer",
     "start": "bun run build && electron .",
-    "dev": "electron .",
+    "electron" : "electron .",
+    "dev": "concurrently \"vite\" \"electron .\" ",
     "nodemon": "nodemon --exec electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vite"
   },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.18.1",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.0.5",
+    "concurrently": "^10.0.4",
     "electron": "^42.0.0",
     "electron-window-state": "^5.0.3",
     "electron-window-state-manager": "^0.3.2",

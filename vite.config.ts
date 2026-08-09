@@ -1,17 +1,25 @@
 import { defineConfig } from "vite";
-import { resolve } from "node:path";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import react from "@vitejs/plugin-react";
+
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
+const rendererRoot = path.resolve(projectRoot, "src/renderer");
 
 export default defineConfig({
-  root: resolve(__dirname, "src/renderer"),
+  root: rendererRoot,
+  plugins: [react()],
   server: {
     host: "127.0.0.1",
     port: 5173
   },
+  resolve: {
+    alias: {
+      srcDir: rendererRoot,
+    },
+  },
   build: {
-    outDir: resolve(__dirname, "dist/renderer"),
+    outDir: path.resolve(projectRoot, "dist/renderer"),
     emptyOutDir: true,
-    rollupOptions: {
-      input: resolve(__dirname, "src/renderer/html/index.html")
-    }
   }
 });

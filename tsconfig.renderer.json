@@ -3,12 +3,18 @@
 
     "compilerOptions": {
         "target": "es2022",
-        "module": "commonjs",
+        "module": "esnext",
         "moduleResolution": "bundler",
         "lib": ["es2022", "DOM"],
         "jsx": "react-jsx",
         "types": ["vite/client"],
+        "paths": {
+            "srcDir": ["./src/renderer"],
+            "srcDir/*": ["./src/renderer/*"]
+        },
         "noEmitOnError": false,
+        "noEmit": true,
+        "isolatedModules": true,
         "rootDir": "./src/renderer",
         "outDir": "./dist/renderer"
     },
