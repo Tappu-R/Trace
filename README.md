@@ -6,6 +6,11 @@ To install dependencies:
 bun install
 ```
 
+# CSS Playlist cwh
+```bash
+https://youtube.com/playlist?list=PLciOlTOzG6vE&si=e4qx4pKxYh9lVO0Q
+```
+
 To run:
 
 ```bash
