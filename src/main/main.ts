@@ -34,7 +34,7 @@ function createOrb () {
     
     orb.on("closed", ()=> app.quit())
     
-    orb.loadFile(path.join(app.getAppPath(), "dist/renderer/orb.html"))
+    orb.loadFile(path.join(app.getAppPath(), "dist/main/main.html"))
 }
 
 function createOverlay () {
@@ -70,7 +70,8 @@ app.whenReady().then(() => {
     // // for debugging only
     // console.log(width, height)
 
-    // createOrb() // Created the orb object  
+    createOrb() // Created the orb object 
+
     // screenConstant = {
     //     x: orb.getPosition()[0] as number,
     //     y: orb.getPosition()[1] as number,
@@ -80,7 +81,7 @@ app.whenReady().then(() => {
 
 
     // NOTE: overylay process work
-    createOverlay()
+    // createOverlay()
 
 })
 

@@ -26,7 +26,7 @@ function createOrb() {
         }
     });
     orb.on("closed", () => app.quit());
-    orb.loadFile(path.join(app.getAppPath(), "dist/renderer/orb.html"));
+    orb.loadFile(path.join(app.getAppPath(), "dist/main/main.html"));
 }
 function createOverlay() {
     overlay = new BrowserWindow({
@@ -51,14 +51,14 @@ app.whenReady().then(() => {
     // NOTE: Orb process work
     // // for debugging only
     // console.log(width, height)
-    // createOrb() // Created the orb object  
+    createOrb(); // Created the orb object 
     // screenConstant = {
     //     x: orb.getPosition()[0] as number,
     //     y: orb.getPosition()[1] as number,
     // };
     // console.log(screenConstant)
     // NOTE: overylay process work
-    createOverlay();
+    // createOverlay()
 });
 ipcMain.on("openOverlay", (ipcEvent) => {
     createOverlay();

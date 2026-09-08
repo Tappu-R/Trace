@@ -8,7 +8,7 @@ function onPointerMove(event) {
         x: event.clientX,
         y: event.clientY
     };
-    window.API.drag(mousePosition);
+    // window.API.drag(mousePosition)
 }
 function endDrag() {
     isDragging = false;
